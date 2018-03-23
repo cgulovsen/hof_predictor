@@ -105,17 +105,5 @@ def add_to_dataset(player_dictionary, position):
         dataset_writer = csv.writer(f)
         dataset_writer.writerow(player_dictionary.values())
 
-    return
 
-#url = 'https://www.baseball-reference.com/players/c/colonba01.shtml' #pitcher, Bartolo Colon
-#url = "https://www.baseball-reference.com/players/a/aaronha01.shtml" #position player, Hank Aaron
-url = 'https://www.baseball-reference.com/players/b/biggicr01.shtml' #position player, Craig Biggio
 
-#check_position(url)
-#check_years(url)
-#get_career_numbers(url)
-
-#dict = {'Name': 'Hank Aaron', 'WAR': 143.0, 'At Bats': 12364.0, 'Runs': 2174.0, 'Hits': 3771.0, 'Batting Avg': 0.305, 'HR': 755.0, 'RBI': 2297.0, 'SB': 240.0, 'OBP': 0.374, 'SLG': 0.555, 'OPS': 0.928, 'OPS+': 155.0}
-
-#build_dataset_columns()
-#add_to_dataset(dict, 'Outfielder')
