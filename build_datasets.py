@@ -54,6 +54,17 @@ def check_years(url):
         return False
 
 
+def check_hof(name):
+    hof_pd = pd.read_html('https://www.baseball-reference.com/awards/hof.shtml')
+    hof_list = hof_pd[0]
+    hof_names = hof_list['Name']
+
+    if name in list(hof_names):
+        return 1
+    else:
+        return 0
+
+
 def get_career_numbers(player_url):
     with urllib.request.urlopen(player_url) as player_page:
         soup = BeautifulSoup(player_page, 'lxml')
@@ -77,8 +88,10 @@ def get_career_numbers(player_url):
     for i in enumerate(group3):
         career_numbers.append((float(i[1].get_text())))
 
+    career_numbers.append(check_hof(name))
+
     columns = ['Name', 'WAR', 'At Bats', 'Runs', 'Hits', 'Batting Avg', 'HR', 'RBI',
-               'SB', 'OBP', 'SLG', 'OPS', 'OPS+']
+               'SB', 'OBP', 'SLG', 'OPS', 'OPS+','HOF']
 
     player_dict = dict(zip(columns, career_numbers))
 
