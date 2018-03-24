@@ -76,17 +76,35 @@ def get_career_numbers(player_url):
     career1 = soup.find('div', class_='p1')
     group1 = career1.find_all('p')
     for i in enumerate(group1):
-        career_numbers.append((float(i[1].get_text())))
+        if len(group1) == 5:
+            career_numbers.append((float(i[1].get_text())))
+        else:
+            if i[0] % 2 == 0:
+                pass
+            else:
+                career_numbers.append((float(i[1].get_text())))
 
     career2 = soup.find('div', class_='p2')
     group2 = career2.find_all('p')
     for i in enumerate(group2):
-        career_numbers.append((float(i[1].get_text())))
+        if len(group2) == 3:
+            career_numbers.append((float(i[1].get_text())))
+        else:
+            if i[0] % 2 == 0:
+                pass
+            else:
+                career_numbers.append(float(i[1].get_text()))
 
     career3 = soup.find('div', class_='p3')
     group3 = career3.find_all('p')
     for i in enumerate(group3):
-        career_numbers.append((float(i[1].get_text())))
+        if len(group3) == 4:
+            career_numbers.append((float(i[1].get_text())))
+        else:
+            if i[0] % 2 == 0:
+                pass
+            else:
+                career_numbers.append((float(i[1].get_text())))
 
     career_numbers.append(check_hof(name))
 
