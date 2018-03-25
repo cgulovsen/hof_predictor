@@ -6,10 +6,10 @@ from bs4 import BeautifulSoup
 
 def check_player(url):
     if check_position(url) and check_years(url):
-        print('Player: Pass')
+        # print('Player: Pass')
         return True
     else:
-        print('Player: Fail')
+        # print('Player: Fail')
         return False
 
 
@@ -27,18 +27,37 @@ def check_position(url):
     except:
         AttributeError
 
-    #print(position)
-
     if 'Pitcher' in position:
-        print('Position: Fail (Pitcher)')
+        # print('Position: Fail (Pitcher)')
         return False
     else:
-        print('Position: Pass (Position Player)')
+        # print('Position: Pass (Position Player)')
         return True
 
 
-def check_years(url):
+def get_position(url):
+    with urllib.request.urlopen(url) as player_page:
+        soup = BeautifulSoup(player_page, 'lxml')
 
+    try:
+        position = soup.find(string='Positions:').find_next(string=True)
+    except:
+        AttributeError
+
+    try:
+        position = soup.find(string='Position:').find_next(string=True)
+    except:
+        AttributeError
+
+    position = str(position).strip()
+    pos = position.replace(',' , ' ')
+    primary_pos = str(pos).split(' ')[0]
+    #print('primary pos: ', primary_pos)
+
+    return primary_pos
+
+
+def check_years(url):
     start = pd.read_html(url)
     df = start[0]
     df = df.drop(df.index[len(df) - 1])
