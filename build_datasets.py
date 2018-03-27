@@ -54,6 +54,9 @@ def get_position(url):
     primary_pos = str(pos).split(' ')[0]
     #print('primary pos: ', primary_pos)
 
+    if primary_pos in ('Leftfielder', 'Centerfielder', 'Rightfielder'):
+        primary_pos = 'Outfielder'
+
     return primary_pos
 
 
