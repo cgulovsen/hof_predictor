@@ -64,15 +64,15 @@ def check_years(url):
     start = pd.read_html(url)
     df = start[0]
     df = df.drop(df.index[len(df) - 1])
-    last_year = df['Year'].dropna().astype(int).unique().max()
 
-    # print(last_year)
+    last_year = df['Year'].dropna().astype(int).unique().max()
+    total_years = df['Age'].max() - df['Age'].min()
+
+    years = [last_year, total_years]
 
     if 1980 <= last_year <=2010:
-        print('Year: Pass')
-        return True
+        return years
     else:
-        print('Year: Fail')
         return False
 
 
