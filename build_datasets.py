@@ -4,6 +4,18 @@ import pandas as pd
 from bs4 import BeautifulSoup
 
 
+def get_player_pages():
+    base_url = 'https://www.baseball-reference.com/players/'
+    urls = []
+    letters = ['a/', 'b/', 'c/', 'd/', 'e/', 'f/', 'g/', 'h/', 'i/', 'j/', 'k/', 'l/', 'm/', 'n/',
+               'o/', 'p/', 'q/', 'r/', 's/', 't/', 'u/', 'v/', 'w/', 'x/', 'y/', 'z/']
+    for letter in letters:
+        url = base_url + letter
+        urls.append(url)
+
+    return urls
+
+
 def get_players(url):
     with urllib.request.urlopen(url) as player_page:
         soup = BeautifulSoup(player_page, 'html.parser')
