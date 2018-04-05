@@ -4,6 +4,22 @@ import pandas as pd
 from bs4 import BeautifulSoup
 
 
+def get_players(url):
+    with urllib.request.urlopen(url) as player_page:
+        soup = BeautifulSoup(player_page, 'html.parser')
+
+    players = []
+    links = soup.find('h2').find_next('a')
+
+    while True:
+        if '/players/' in links['href']:
+            players.append(links['href'])
+            # print('Added ', links)
+            links = links.find_next('a')
+        else:
+            return players
+
+
 def check_player(url):
     if check_position(url) and check_years(url):
         # print('Player: Pass')
