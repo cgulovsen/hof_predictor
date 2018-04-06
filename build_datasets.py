@@ -4,7 +4,7 @@ import pandas as pd
 from bs4 import BeautifulSoup
 
 
-def get_player_pages():
+def get_letter_pages():
     base_url = 'https://www.baseball-reference.com/players/'
     urls = []
     letters = ['a/', 'b/', 'c/', 'd/', 'e/', 'f/', 'g/', 'h/', 'i/', 'j/', 'k/', 'l/', 'm/', 'n/',
@@ -16,7 +16,7 @@ def get_player_pages():
     return urls
 
 
-def get_players(url):
+def get_players_url(url):
     with urllib.request.urlopen(url) as player_page:
         soup = BeautifulSoup(player_page, 'html.parser')
 
@@ -126,7 +126,8 @@ def get_career_numbers(player_url):
     career1 = soup.find('div', class_='p1')
     group1 = career1.find_all('p')
     for i in enumerate(group1):
-        if len(group1) == 5:
+        #if len(group1) == 5:
+        if len(group1) in (4,5):
             career_numbers.append((float(i[1].get_text())))
         else:
             if i[0] % 2 == 0:
@@ -148,7 +149,8 @@ def get_career_numbers(player_url):
     career3 = soup.find('div', class_='p3')
     group3 = career3.find_all('p')
     for i in enumerate(group3):
-        if len(group3) == 4:
+        #if len(group3) == 4:
+        if len(group3) in (3,4):
             career_numbers.append((float(i[1].get_text())))
         else:
             if i[0] % 2 == 0:
@@ -163,17 +165,35 @@ def get_career_numbers(player_url):
 
     player_dict = dict(zip(columns, career_numbers))
 
-    return player_dict
+    # return player_dict
+    return career_numbers
 
+def build_player_dict(career_nums, position):
+    career_numbers = career_nums
+
+    if position == 'Pitcher':
+        keys = ['Name', 'WAR', 'W', 'L', 'ERA', 'G', 'GS', 'SV', 'IP', 'K', 'WHIP' ]
+        career_nums = career_nums[:-1]
+    else:
+        keys = ['Name', 'WAR', 'At Bats', 'Runs', 'Hits', 'Batting Avg', 'HR', 'RBI',
+               'SB', 'OBP', 'SLG', 'OPS', 'OPS+']
+
+    player_dict = dict(zip(keys, career_numbers))
+
+    return player_dict
 
 def build_dataset_columns():
 
-    columns = ['Name', 'WAR', 'At Bats', 'Runs', 'Hits', 'Batting Avg', 'HR', 'RBI',
+    position_columns = ['Name', 'WAR', 'At Bats', 'Runs', 'Hits', 'Batting Avg', 'HR', 'RBI',
                'SB', 'OBP', 'SLG', 'OPS', 'OPS+']
-
     with open('position_players.csv', 'w') as csvfile:
         dataset_writer = csv.writer(csvfile)
-        dataset_writer.writerow(columns)
+        dataset_writer.writerow(position_columns)
+
+    pitcher_columns = ['Name', 'WAR', 'W', 'L', 'ERA', 'G', 'GS', 'SV', 'IP', 'K', 'WHIP' ]
+    with open('pitchers.csv', 'w') as csvfile:
+        dataset_writer = csv.writer(csvfile)
+        dataset_writer.writerow(pitcher_columns)
 
 
 def add_to_dataset(player_dictionary, position):
